@@ -1,5 +1,5 @@
 
 INSERT INTO USERS
-    (USER_NAME, FIRST_NAME, LAST_NAME, AGE)
+    (USER_NAME, FIRST_NAME, LAST_NAME)
 VALUES
-    ('jonD@someEmail.com', 'Jon', 'Doe', '25');
+    ('jonD@someEmail.com', 'Jon', 'Doe');

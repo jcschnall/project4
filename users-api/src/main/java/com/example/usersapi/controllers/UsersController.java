@@ -18,12 +18,17 @@ public class UsersController {
 	@Autowired
 	private UserRepository userRepository;
 
-	@GetMapping("/")
-	public List<User> findAllUsers() {
+	@GetMapping("/users")
+	public Iterable<User> findAllUsers() {
 		return userRepository.findAll();
 	}
 
-	@GetMapping("/{userId}")
+	@GetMapping("/test")
+	public String findTest() {
+		return "test";
+	}
+
+	@GetMapping("users/{userId}")
 	public User findUserById(@PathVariable Long userId) throws NotFoundException {
 
 		User foundUser = userRepository.findOne(userId);
@@ -35,19 +40,19 @@ public class UsersController {
 		return foundUser;
 	}
 
-	@PostMapping("/")
+	@PostMapping("/users")
 	public User createNewUser(@RequestBody User newUser) {
 		return userRepository.save(newUser);
 	}
 
-	@DeleteMapping("/{userId}")
+	@DeleteMapping("users/{userId}")
 	public HttpStatus deleteUserById(@PathVariable Long userId) throws EmptyResultDataAccessException {
 
 		userRepository.delete(userId);
 		return HttpStatus.OK;
 	}
 
-	@PatchMapping("/{userId}")
+	@PatchMapping("users/{userId}")
 	public User updateUserById(@PathVariable Long userId, @RequestBody User userRequest) throws NotFoundException {
 		User userFromDb = userRepository.findOne(userId);
 
