@@ -108,6 +108,6 @@ public class UsersUIFeatureTest {
 
 	}
 
-	/**88*/
+	*/
 
 }
