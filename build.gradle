@@ -65,3 +65,25 @@ test {
 test.finalizedBy(composeDown)
 
 
+
+task startUIDevServer(type: Exec) {
+    workingDir './users-ui'
+    commandLine 'pm2', 'start', 'node_modules/react-scripts/scripts/start.js', '-f', '--name', 'tunr-ui-test'
+}
+
+
+task allTests(type: Test) {
+    dependsOn cleanTest
+    dependsOn startUIDevServer
+    dependsOn runUsersAPITests
+
+    testLogging {
+        exceptionFormat "full"
+        events "skipped", "passed", "failed"
+        displayGranularity 2
+    }
+}
+
+allTests.finalizedBy(composeDown)
+
+

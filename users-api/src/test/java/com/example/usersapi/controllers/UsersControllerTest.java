@@ -48,8 +48,8 @@ public class UsersControllerTest {
 
 		User firstUser = new User(
 			"someone",
-			"Ima",
-			"Person"
+			"Some",
+			"One"
 		);
 
 		User secondUser = new User(
@@ -116,7 +116,7 @@ public class UsersControllerTest {
 
 		this.mockMvc
 			.perform(get("/users"))
-			.andExpect(jsonPath("$[0].firstName", is("Ima")));
+			.andExpect(jsonPath("$[0].firstName", is("Some")));
 	}
 
 	@Test
@@ -124,7 +124,7 @@ public class UsersControllerTest {
 
 		this.mockMvc
 			.perform(get("/users"))
-			.andExpect(jsonPath("$[0].lastName", is("Person")));
+			.andExpect(jsonPath("$[0].lastName", is("One")));
 	}
 
 	@Test
@@ -148,7 +148,7 @@ public class UsersControllerTest {
 
 		this.mockMvc
 			.perform(get("/users/1"))
-			.andExpect(jsonPath("$.firstName", is("Ima")));
+			.andExpect(jsonPath("$.firstName", is("Some")));
 	}
 
 	@Test
@@ -156,7 +156,7 @@ public class UsersControllerTest {
 
 		this.mockMvc
 			.perform(get("/users/1"))
-			.andExpect(jsonPath("$.lastName", is("Person")));
+			.andExpect(jsonPath("$.lastName", is("One")));
 	}
 
 	@Test
@@ -296,17 +296,6 @@ public class UsersControllerTest {
 			.andExpect(jsonPath("$.lastName", is("Info")));
 	}
 
-	@Test
-	public void updateUserById_failure_userNotFoundReturns404() throws Exception {
-
-		this.mockMvc
-			.perform(
-				patch("/users/4")
-					.contentType(MediaType.APPLICATION_JSON)
-					.content(jsonObjectMapper.writeValueAsString(updatedSecondUser))
-			)
-			.andExpect(status().isNotFound());
-	}
 
 	@Test
 	public void updateUserById_failure_userNotFoundReturnsNotFoundErrorMessage() throws Exception {

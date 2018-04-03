@@ -54,7 +54,7 @@ public class UsersApiFeatureTest {
                 });
 
         when()
-                .get("http://localhost:8080/users")
+                .get("http://localhost:8081/users")
                 .then()
                 .statusCode(is(200))
                 .and()
@@ -63,14 +63,14 @@ public class UsersApiFeatureTest {
                 .body(containsString("someone_else"));
 
         when()
-                .get("http://localhost:8080/users/" + secondUser.getId())
+                .get("http://localhost:8081/users/" + secondUser.getId())
                 .then()
                 .statusCode(is(200))
                 .body(containsString("Someone"))
                 .body(containsString("Else"));
 
         when()
-                .delete("http://localhost:8080/users/" + secondUser.getId())
+                .delete("http://localhost:8081/users/" + secondUser.getId())
                 .then()
                 .statusCode(is(200));
     }
