@@ -43,8 +43,14 @@ public class UsersControllerTest {
 	private User newUser;
 	private User updatedSecondUser;
 
+
+
+
+
 	@Before
 	public void setUp() {
+
+		//create mock users
 
 		User firstUser = new User(
 			"someone",
@@ -53,19 +59,32 @@ public class UsersControllerTest {
 		);
 
 		User secondUser = new User(
-			"someone_else",
+			"someOtherOne",
 			"Someone",
-			"Else"
+			"Other"
 		);
 
+
+		//mock users list
 		List<User> mockUsers =
 			Stream.of(firstUser, secondUser).collect(Collectors.toList());
 
+		//mock calls to repo
 		given(mockUserRepository.findAll()).willReturn(mockUsers);
-
 		given(mockUserRepository.findOne(1L)).willReturn(firstUser);
 		given(mockUserRepository.findOne(4L)).willReturn(null);
 
+
+		//mock to test update
+		updatedSecondUser = new User(
+				"updated_username",
+				"Updated",
+				"Info"
+		);
+		given(mockUserRepository.save(updatedSecondUser)).willReturn(updatedSecondUser);
+
+
+		//mock to create new
 		newUser = new User(
 			"new_user_for_create",
 			"New",
@@ -73,38 +92,34 @@ public class UsersControllerTest {
 		);
 		given(mockUserRepository.save(newUser)).willReturn(newUser);
 
-		updatedSecondUser = new User(
-			"updated_username",
-			"Updated",
-			"Info"
-		);
-		given(mockUserRepository.save(updatedSecondUser)).willReturn(updatedSecondUser);
 
-		// Mock out Delete to return EmptyResultDataAccessException for missing user with ID of 4
+
+
+		// Mock out Delete of empty
 		doAnswer(methodCall -> {
 			throw new EmptyResultDataAccessException("ERROR MESSAGE FROM MOCK!!!", 1234);
 		}).when(mockUserRepository).delete(4L);
 
 	}
 
+
+
+
+
+	//END TO END TESTS OF API
+
+	// TEST findALL  user info and status
 	@Test
-	public void findAllUsers_success_returnsStatusOK() throws Exception {
+	public void findAllUsers_success_StatusOK() throws Exception {
 
 		this.mockMvc
 			.perform(get("/users"))
 			.andExpect(status().isOk());
 	}
 
-	@Test
-	public void findAllUsers_success_returnAllUsersAsJSON() throws Exception {
-
-		this.mockMvc
-			.perform(get("/users"))
-			.andExpect(jsonPath("$", hasSize(2)));
-	}
 
 	@Test
-	public void findAllUsers_success_returnUserNameForEachUser() throws Exception {
+	public void findAllUsers_success_returnUserName() throws Exception {
 
 		this.mockMvc
 			.perform(get("/users"))
@@ -112,7 +127,7 @@ public class UsersControllerTest {
 	}
 
 	@Test
-	public void findAllUsers_success_returnFirstNameForEachUser() throws Exception {
+	public void findAllUsers_success_returnFirstName() throws Exception {
 
 		this.mockMvc
 			.perform(get("/users"))
@@ -120,15 +135,20 @@ public class UsersControllerTest {
 	}
 
 	@Test
-	public void findAllUsers_success_returnLastNameForEachUser() throws Exception {
+	public void findAllUsers_success_returnLastName() throws Exception {
 
 		this.mockMvc
 			.perform(get("/users"))
 			.andExpect(jsonPath("$[0].lastName", is("One")));
 	}
 
+
+
+
+	// Test findOne user info and status
+
 	@Test
-	public void findUserById_success_returnsStatusOK() throws Exception {
+	public void findUserById_success_StatusOK() throws Exception {
 
 		this.mockMvc
 			.perform(get("/users/1"))
@@ -136,7 +156,15 @@ public class UsersControllerTest {
 	}
 
 	@Test
-	public void findUserById_success_returnUserName() throws Exception {
+	public void findUserById_failure_userNotFound404() throws Exception {
+
+		this.mockMvc
+				.perform(get("/users/4"))
+				.andExpect(status().isNotFound());
+	}
+
+	@Test
+	public void findUserById_success_UserName() throws Exception {
 
 		this.mockMvc
 			.perform(get("/users/1"))
@@ -144,7 +172,7 @@ public class UsersControllerTest {
 	}
 
 	@Test
-	public void findUserById_success_returnFirstName() throws Exception {
+	public void findUserById_success_FirstName() throws Exception {
 
 		this.mockMvc
 			.perform(get("/users/1"))
@@ -152,35 +180,37 @@ public class UsersControllerTest {
 	}
 
 	@Test
-	public void findUserById_success_returnLastName() throws Exception {
+	public void findUserById_success_LastName() throws Exception {
 
 		this.mockMvc
 			.perform(get("/users/1"))
 			.andExpect(jsonPath("$.lastName", is("One")));
 	}
 
-	@Test
-	public void findUserById_failure_userNotFoundReturns404() throws Exception {
 
-		this.mockMvc
-			.perform(get("/users/4"))
-			.andExpect(status().isNotFound());
-	}
 
-	@Test
-	public void findUserById_failure_userNotFoundReturnsNotFoundErrorMessage() throws Exception {
 
-		this.mockMvc
-			.perform(get("/users/4"))
-			.andExpect(status().reason(containsString("User with ID of 4 was not found!")));
-	}
+
+
+
+
+
+	//Test delete user
 
 	@Test
-	public void deleteUserById_success_returnsStatusOk() throws Exception {
+	public void deleteUserById_success_StatusOk() throws Exception {
 
 		this.mockMvc
 			.perform(delete("/users/1"))
 			.andExpect(status().isOk());
+	}
+
+	@Test
+	public void deleteUserById_failure_Returns404() throws Exception {
+
+		this.mockMvc
+				.perform(delete("/users/4"))
+				.andExpect(status().isNotFound());
 	}
 
 	@Test
@@ -191,16 +221,15 @@ public class UsersControllerTest {
 		verify(mockUserRepository, times(1)).delete(1L);
 	}
 
-	@Test
-	public void deleteUserById_failure_userNotFoundReturns404() throws Exception {
 
-		this.mockMvc
-			.perform(delete("/users/4"))
-			.andExpect(status().isNotFound());
-	}
+
+
+
+
+	// Test create newUser with json object mapper
 
 	@Test
-	public void createUser_success_returnsStatusOk() throws Exception {
+	public void createUser_success_StatusOk() throws Exception {
 
 		this.mockMvc
 			.perform(
@@ -248,8 +277,13 @@ public class UsersControllerTest {
 	}
 
 
+
+
+
+	//Test update user
+
 	@Test
-	public void updateUserById_success_returnsStatusOk() throws Exception {
+	public void updateUserById_success_StatusOk() throws Exception {
 
 		this.mockMvc
 			.perform(
@@ -261,7 +295,7 @@ public class UsersControllerTest {
 	}
 
 	@Test
-	public void updateUserById_success_returnsUpdatedUserName() throws Exception {
+	public void updateUserById_success_UpdatedUserName() throws Exception {
 
 		this.mockMvc
 			.perform(
@@ -273,7 +307,7 @@ public class UsersControllerTest {
 	}
 
 	@Test
-	public void updateUserById_success_returnsUpdatedFirstName() throws Exception {
+	public void updateUserById_success_UpdatedFirstName() throws Exception {
 
 		this.mockMvc
 			.perform(
@@ -298,7 +332,7 @@ public class UsersControllerTest {
 
 
 	@Test
-	public void updateUserById_failure_userNotFoundReturnsNotFoundErrorMessage() throws Exception {
+	public void updateUserById_failure_userNotFound() throws Exception {
 
 		this.mockMvc
 			.perform(
@@ -306,7 +340,8 @@ public class UsersControllerTest {
 					.contentType(MediaType.APPLICATION_JSON)
 					.content(jsonObjectMapper.writeValueAsString(updatedSecondUser))
 			)
-			.andExpect(status().reason(containsString("User with ID of 4 was not found!")));
+			.andExpect(status().reason(containsString("not found!")));
 	}
+
 
 }
