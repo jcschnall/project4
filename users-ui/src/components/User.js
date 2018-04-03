@@ -1,27 +1,29 @@
 import React from 'react'
 
 const User = (props) => {
-    return (
+    return ( <center>
         <div id={`user-${props.user.id}`} data-user-display>
+            <br></br>
             <div id={`user-${props.user.id}-user-name`}>
-                {props.user.userName}
+                EMAIL:  &nbsp;&nbsp;      {props.user.userName}
             </div>
-
+            <br></br>
             <div id={`user-${props.user.id}-first-name`}>
-                {props.user.firstName}
+                FIRST NAME: &nbsp;&nbsp;  {props.user.firstName}
             </div>
-
+             <br></br>
             <div id={`user-${props.user.id}-last-name`}>
-                {props.user.lastName}
+                LAST NAME: &nbsp;&nbsp;  {props.user.lastName}
             </div>
-
+            <br></br>
             <button
                 id={`delete-user-${props.user.id}`}
                 onClick={() => {props.deleteUser(props.user.id, props.index)}}>
 
-                Delete
+                Remove User
             </button>
         </div>
+        </center>
     )
 }
 

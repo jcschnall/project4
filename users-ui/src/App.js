@@ -1,10 +1,9 @@
 import React, {Component} from 'react'
 import axios from 'axios'
-
-import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
-
 import UsersList from './components/UsersList'
 import NewUserForm from './components/NewUserForm'
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+
 
 class App extends Component {
 
@@ -13,14 +12,28 @@ class App extends Component {
     }
 
 
-
     async componentWillMount() {
-        const usersResponse = await axios.get("/users")
+        const response = await axios.get("/users")
         this.setState({
-            users: usersResponse.data,
-            usersResponse
+            users: response.data,
+            response
         })
 
+    }
+
+    createUser = async (newUser) => {
+        try {
+            const response = await axios.post('/users', newUser)
+            const newUserDB = response.data
+
+            const updatedUsersList = [...this.state.users]
+            updatedUsersList.push(newUserDB)
+
+            this.setState({users: updatedUsersList})
+
+        } catch (error) {
+            console.log("Error creating new User")
+        }
     }
 
 
@@ -35,21 +48,6 @@ class App extends Component {
 
         } catch (error) {
             console.log(`Error deleting User with ID: ${userId}`)
-        }
-    }
-
-    createUser = async (newUser) => {
-        try {
-            const newUserResponse = await axios.post('/users', newUser)
-            const newUserFromDatabase = newUserResponse.data
-
-            const updatedUsersList = [...this.state.users]
-            updatedUsersList.push(newUserFromDatabase)
-
-            this.setState({users: updatedUsersList})
-
-        } catch (error) {
-            console.log("Error creating new User")
         }
     }
 
@@ -71,6 +69,7 @@ class App extends Component {
                     <Route exact path="/" render={UsersListComponent}/>
                     <Route exact path="/new" render={NewUserFormComponent}/>
                     <Route exact path="/list" render={UsersListComponent}/>
+                    <Route exact path="/logIn" render={NewUserFormComponent}/>
                 </Switch>
             </Router>
         )

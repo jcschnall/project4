@@ -38,8 +38,8 @@ public class UsersApiFeatureTest {
 
         User firstUser = new User(
                 "someone",
-                "Ima",
-                "Person"
+                "Some",
+                "One"
         );
 
         User secondUser = new User(

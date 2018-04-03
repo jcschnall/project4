@@ -33,17 +33,22 @@ class NewUserForm extends Component {
 
 
         return (
+            <center>
             <div>
-                <h2>Create New User</h2>
+                <h2>Login Info</h2>
                 <form onSubmit={this.handleSubmit} id="new-user-form">
                     <div>
-                        <label htmlFor="userName">Username </label>
+                        <label htmlFor="userName">Email </label>
                         <input
                             id="new-user-user-name"
                             type="text"
                             name="userName"
                             onChange={this.handleChange} />
+                                           <br>
+                                           </br>
                     </div>
+                     <br>
+                                                               </br>
 
                     <div>
                         <label htmlFor="firstName">First Name </label>
@@ -53,6 +58,8 @@ class NewUserForm extends Component {
                             name="firstName"
                             onChange={this.handleChange} />
                     </div>
+                     <br>
+                                                               </br>
 
                     <div>
                         <label htmlFor="lastName">Last Name </label>
@@ -62,15 +69,18 @@ class NewUserForm extends Component {
                             name="lastName"
                             onChange={this.handleChange} />
                     </div>
+                     <br>
+                                                               </br>
 
                     <div>
                         <input
                             id="new-user-submit"
                             type="submit"
-                            value="Create" />
+                            value="LogIn" />
                     </div>
                 </form>
             </div>
+            </center>
         )
     }
 

@@ -62,13 +62,12 @@ test {
         displayGranularity 2
     }
 }
-test.finalizedBy(composeDown)
 
 
 
 task startUIDevServer(type: Exec) {
     workingDir './users-ui'
-    commandLine 'pm2', 'start', 'node_modules/react-scripts/scripts/start.js', '-f', '--name', 'tunr-ui-test'
+    commandLine 'pm2', 'start', 'node_modules/react-scripts/scripts/start.js', '-f', '--name', 'users-ui-test'
 }
 
 
@@ -84,10 +83,10 @@ task allTests(type: Test) {
     }
 }
 
-allTests.finalizedBy(composeDown)
 
 
-     
+
+
 
 
 
