@@ -42,13 +42,13 @@ public class UserRepositoryTest {
 	public void findAll_returnsAllUsers() {
 		List<User> usersFromDb = userRepository.findAll();
 
-		assertThat(usersFromDb.size(), is(1));
+		assertThat(usersFromDb.size(), is(2));
 	}
 
 	@Test
 	public void findAll_returnsUserName() {
 		List<User> usersFromDb = userRepository.findAll();
-		String UsersUserName = usersFromDb.get(0).getUserName();
+		String UsersUserName = usersFromDb.get(1).getUserName();
 
 		assertThat(UsersUserName, is("user_name"));
 	}
@@ -56,7 +56,7 @@ public class UserRepositoryTest {
 	@Test
 	public void findAll_returnsFirstName() {
 		List<User> usersFromDb = userRepository.findAll();
-		String UsersFirstName = usersFromDb.get(0).getFirstName();
+		String UsersFirstName = usersFromDb.get(1).getFirstName();
 
 		assertThat(UsersFirstName, is("first name"));
 	}
@@ -64,7 +64,7 @@ public class UserRepositoryTest {
 	@Test
 	public void findAll_returnsLastName() {
 		List<User> usersFromDb = userRepository.findAll();
-		String UsersLastName = usersFromDb.get(0).getLastName();
+		String UsersLastName = usersFromDb.get(1).getLastName();
 
 		assertThat(UsersLastName, is("last name"));
 	}
