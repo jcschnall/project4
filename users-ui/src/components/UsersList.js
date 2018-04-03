@@ -17,7 +17,8 @@ const UsersList = (props) => {
                             deleteUser={props.deleteUser}
                             user={user}
                             key={index}
-                            index={index} />
+                            index={index}
+                            />
                     )
                 })
             }

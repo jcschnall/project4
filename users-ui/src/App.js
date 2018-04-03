@@ -24,8 +24,8 @@ class App extends Component {
     createUser = async (newUser) => {
         try {
             const response = await axios.post('/users', newUser)
-            const newUserDB = response.data
 
+            const newUserDB = response.data
             const updatedUsersList = [...this.state.users]
             updatedUsersList.push(newUserDB)
 
@@ -53,15 +53,36 @@ class App extends Component {
 
     render() {
 
+        const NewUserFormComponent = () => (
+            <NewUserForm createUser={this.createUser}/>
+        )
+
         const UsersListComponent = () => (
             <UsersList
                 users={this.state.users}
                 deleteUser={this.deleteUser}/>
         )
 
-        const NewUserFormComponent = () => (
-            <NewUserForm createUser={this.createUser}/>
+
+        /*
+        const UserByEmail = () => (
+
+            function onClickReturnUserID(){
+                return this.props.user.id
+            }
+
+            id = user.props.user.id
+            <UsersList
+                users={this.state.users[id]}
+                deleteUser={this.deleteUser}/>
         )
+         <Route exact path="/byEmail" render={UserByEmail}/>
+
+         Link to="/byEmail"
+        */
+
+
+
 
         return (
             <Router>
