@@ -9,9 +9,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
 import java.util.stream.Stream;
-
 import static io.restassured.RestAssured.when;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.core.Is.is;
@@ -34,7 +32,7 @@ public class UsersApiFeatureTest {
     }
 
     @Test
-    public void shouldAllowFullCrudFunctionalityForAUser() throws Exception {
+    public void CrudForALLUsers() throws Exception {
 
         User firstUser = new User(
                 "someone",
@@ -43,9 +41,9 @@ public class UsersApiFeatureTest {
         );
 
         User secondUser = new User(
-                "someone_else",
+                "someOtherOne",
                 "Someone",
-                "Else"
+                "Other"
         );
 
         Stream.of(firstUser, secondUser)
@@ -60,14 +58,39 @@ public class UsersApiFeatureTest {
                 .and()
                 .body(containsString("someone"))
                 .and()
-                .body(containsString("someone_else"));
+                .body(containsString("someOtherOne"));
+
+        when()
+                .get("http://localhost:8081/xxxxxx/")
+                .then()
+                .statusCode(is(404));
+
+        when()
+                .get("http://localhost:8081/users/x")
+                .then()
+                .statusCode(is(400));
+
+
+        when()
+                .get("http://localhost:8081/users/" + firstUser.getId())
+                .then()
+                .statusCode(is(200))
+                .body(containsString("someone"))
+                .body(containsString("Some"))
+                .body(containsString("One"));
+
+        when()
+                .delete("http://localhost:8081/users/" + firstUser.getId())
+                .then()
+                .statusCode(is(200));
 
         when()
                 .get("http://localhost:8081/users/" + secondUser.getId())
                 .then()
                 .statusCode(is(200))
+                .body(containsString("someOtherOne"))
                 .body(containsString("Someone"))
-                .body(containsString("Else"));
+                .body(containsString("Other"));
 
         when()
                 .delete("http://localhost:8081/users/" + secondUser.getId())

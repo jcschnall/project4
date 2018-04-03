@@ -9,7 +9,7 @@ const UsersList = (props) => {
         <div id="users-wrapper">
             <h1>List Of Users</h1>
 
-            <Link to="/new" id="new-user-link">Log In</Link>
+            <Link to="/logIn" id="new-user-link">Log In</Link>
             {
                 props.users.map((user, index) => {
                     return (

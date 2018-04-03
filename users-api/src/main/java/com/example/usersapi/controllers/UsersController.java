@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
@@ -18,6 +17,7 @@ public class UsersController {
 	@Autowired
 	private UserRepository userRepository;
 
+
 	@GetMapping("/users")
 	public Iterable<User> findAllUsers() {
 		return userRepository.findAll();
@@ -26,7 +26,7 @@ public class UsersController {
 	@GetMapping("/test")
 	public String findTest() {
 		return "test";
-	}
+	}    //for debugging purposes
 
 	@GetMapping("users/{userId}")
 	public User findUserById(@PathVariable Long userId) throws NotFoundException {
@@ -34,16 +34,20 @@ public class UsersController {
 		User foundUser = userRepository.findOne(userId);
 
 		if (foundUser == null) {
-			throw new NotFoundException("User with ID of " + userId + " was not found!");
+			throw new NotFoundException("not found!");
 		}
 
 		return foundUser;
 	}
 
+
+
 	@PostMapping("/users")
 	public User createNewUser(@RequestBody User newUser) {
 		return userRepository.save(newUser);
 	}
+
+
 
 	@DeleteMapping("users/{userId}")
 	public HttpStatus deleteUserById(@PathVariable Long userId) throws EmptyResultDataAccessException {
@@ -52,12 +56,14 @@ public class UsersController {
 		return HttpStatus.OK;
 	}
 
+
+
 	@PatchMapping("users/{userId}")
 	public User updateUserById(@PathVariable Long userId, @RequestBody User userRequest) throws NotFoundException {
 		User userFromDb = userRepository.findOne(userId);
 
 		if (userFromDb == null) {
-			throw new NotFoundException("User with ID of " + userId + " was not found!");
+			throw new NotFoundException("not found!");
 		}
 
 		userFromDb.setUserName(userRequest.getUserName());
@@ -67,7 +73,10 @@ public class UsersController {
 		return userRepository.save(userFromDb);
 	}
 
-	// EXCEPTION HANDLERS
+
+
+
+	// Add exceptions for testing purposes
 
 	@ExceptionHandler
 	void handleUserNotFound(

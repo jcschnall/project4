@@ -66,8 +66,6 @@ class App extends Component {
         return (
             <Router>
                 <Switch>
-                    <Route exact path="/" render={UsersListComponent}/>
-                    <Route exact path="/new" render={NewUserFormComponent}/>
                     <Route exact path="/list" render={UsersListComponent}/>
                     <Route exact path="/logIn" render={NewUserFormComponent}/>
                 </Switch>
