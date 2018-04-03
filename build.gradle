@@ -44,7 +44,7 @@ dependencies {
 }
 
 task waitForUsersAPI(type: Exec) {
-    commandLine './wait-for-api.sh', 'http://localhost:8080/users', 'Users API'
+    commandLine './wait-for-api.sh', 'http://localhost:8081/users', 'Users API'
 }
 
 task runUsersAPITests(type: Exec) {
@@ -52,42 +52,16 @@ task runUsersAPITests(type: Exec) {
     commandLine './gradlew', 'test'
 }
 
-task startUIDevServer(type: Exec) {
-    workingDir './users-ui'
-    commandLine 'pm2', 'start', 'node_modules/react-scripts/scripts/start.js', '-f', '--name', 'tunr-ui-test'
-}
-
-task stopUIDevServer(type: Exec) {
-    workingDir './users-ui'
-    commandLine 'pm2', 'stop', 'tunr-ui-test'
-}
-
 test {
     dependsOn cleanTest
     dependsOn waitForUsersAPI
-    dependsOn startUIDevServer
 
     testLogging {
         exceptionFormat "full"
         events "skipped", "passed", "failed"
         displayGranularity 2
     }
-
 }
-test.finalizedBy(stopUIDevServer)
 test.finalizedBy(composeDown)
 
-task allTests(type: Test) {
-    dependsOn cleanTest
-    dependsOn startUIDevServer
-    dependsOn runUsersAPITests
-
-    testLogging {
-        exceptionFormat "full"
-        events "skipped", "passed", "failed"
-        displayGranularity 2
-    }
-}
-allTests.finalizedBy(stopUIDevServer)
-allTests.finalizedBy(composeDown)
 

@@ -30,18 +30,11 @@ public class UserRepositoryTest {
 	public void setUp() {
 		User firstUser = new User(
 			"user_name",
-			"some first name",
-			"some last name"
-		);
-
-		User secondUser = new User(
-			"second_user",
-			"some other first name",
-			"some other last name"
+			"first name",
+			"last name"
 		);
 
 		entityManager.persist(firstUser);
-		entityManager.persist(secondUser);
 		entityManager.flush();
 	}
 
@@ -49,31 +42,31 @@ public class UserRepositoryTest {
 	public void findAll_returnsAllUsers() {
 		List<User> usersFromDb = userRepository.findAll();
 
-		assertThat(usersFromDb.size(), is(2));
+		assertThat(usersFromDb.size(), is(1));
 	}
 
 	@Test
 	public void findAll_returnsUserName() {
 		List<User> usersFromDb = userRepository.findAll();
-		String secondUsersUserName = usersFromDb.get(1).getUserName();
+		String UsersUserName = usersFromDb.get(0).getUserName();
 
-		assertThat(secondUsersUserName, is("second_user"));
+		assertThat(UsersUserName, is("user_name"));
 	}
 
 	@Test
 	public void findAll_returnsFirstName() {
 		List<User> usersFromDb = userRepository.findAll();
-		String secondUsersFirstName = usersFromDb.get(1).getFirstName();
+		String UsersFirstName = usersFromDb.get(0).getFirstName();
 
-		assertThat(secondUsersFirstName, is("some other first name"));
+		assertThat(UsersFirstName, is("first name"));
 	}
 
 	@Test
 	public void findAll_returnsLastName() {
 		List<User> usersFromDb = userRepository.findAll();
-		String secondUsersLastName = usersFromDb.get(1).getLastName();
+		String UsersLastName = usersFromDb.get(0).getLastName();
 
-		assertThat(secondUsersLastName, is("some other last name"));
+		assertThat(UsersLastName, is("last name"));
 	}
 
 }
