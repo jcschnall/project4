@@ -85,9 +85,7 @@ task allTests(type: Test) {
 }
 
 allTests.finalizedBy(composeDown)
-
-
-
+     
 
 
 
